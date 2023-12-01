@@ -1,4 +1,19 @@
-export function addWorks(works) {
+// Recuperation des API "works" et "categories" //
+const works = fetch("http://localhost:5678/api/works").then((works) =>
+  works.json()
+);
+const categories = fetch("http://localhost:5678/api/categories").then(
+  (categories) => categories.json()
+);
+
+// Affichage de la galerie //
+works.then((works) => {
+  addWorks(works);
+  addFilters(works);
+});
+
+// Création des "works" dans le HTML //
+function addWorks(works) {
   works.forEach((work) => {
     const galleryDiv = document.querySelector(".gallery");
     const figureElement = document.createElement("figure");
@@ -12,84 +27,51 @@ export function addWorks(works) {
   });
 }
 
-function addDefaultFilter(categories) {
-  categories.unshift({ id: 0, name: "Tous" });
+// Suppression de tout les "works" affiché //
+function eraseWorks() {
+  const figureRemoveAll = document.querySelector(".gallery");
+  figureRemoveAll.innerHTML = "";
 }
 
-export function addFilters(categories) {
-  addDefaultFilter(categories);
-  const filtersDiv = document.querySelector(".filters");
-  categories.forEach((category) => {
-    // createButton(category) //
-    const buttonFilter = document.createElement("button");
-    filtersDiv.appendChild(buttonFilter);
-    buttonFilter.id = category.id;
-    buttonFilter.innerText = category.name;
-    // const categoryId = category.id;
-    // buttonFilter.addEventListener("click", () => {
-    //   if (categoryId === 0) {
-    //     console.log("Veni Vidi Vici");
-    //   }
-    //   if (categoryId === 1) {
-    //     console.log("Pouet");
-    //   }
-    // });
-    // if (category.id === 0) {
-    //   // buttonFilter.classList.add("selected");
-    // }
-  });
-  listenerButtons();
-}
-
-function listenerButtons() {
-  let buttons = document.querySelectorAll(".filtres button");
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("click", (event) => {
-      let categoryId = event.target.id;
-      filtrerWorks(categoryId);
-      //Modification des boutons de filtre au clic//
-      let buttonActive = buttons[i];
-      buttonActive.classList.add("selected");
-      let buttonsArray = Array.prototype.slice.call(buttons);
-      let buttonInactive = buttonsArray.filter(
-        (buttonsArray) => buttonsArray !== buttons[i]
-      );
-      buttonInactive.forEach((buttons) => {
-        buttons.classList.remove("selected");
-      });
-    });
-  }
-}
-//fonction pour filtrer les projets//
-function filtrerWorks(categoryId) {
-  let work = fetch("http://localhost:5678/api/works").then((work) =>
-    work.json()
-  );
-  work.then((work) => {
-    let workFiltre = work.filter((work) => work.categoryId == categoryId);
-    document.querySelector(".gallery").innerHTML = "";
-    if (categoryId === "reset") {
-      afficherWorks(work);
-    } else {
-      afficherWorks(workFiltre);
+// Création des boutons filtres //
+function addFilters(works) {
+  const uniqueCategories = [];
+  uniqueCategories.push({ id: 0, name: "Tous" });
+  works.forEach((work) => {
+    const existingCategories = uniqueCategories.filter(
+      (category) => category.id === work.category.id
+    );
+    if (existingCategories.length === 0) {
+      uniqueCategories.push(work.category);
     }
   });
+  console.log(uniqueCategories); // Pour verifier la bonne reception des catégories //
+
+  const filtersDiv = document.querySelector(".filters");
+  // Creation d'une boucle créant d'autant de boutons que de catégories //
+  uniqueCategories.forEach((category) => {
+    const buttonFilter = document.createElement("button");
+    filtersDiv.appendChild(buttonFilter);
+    buttonFilter.id = category.id; // Ajout d'un "id" aux boutons selon l'id celui de la catégorie //
+    buttonFilter.innerText = category.name; // Ajout d'un nom aux boutons selon celui de la catégorie //
+    const categoryId = category.id;
+
+    buttonFilter.addEventListener("click", () => {
+      uniqueCategories.forEach((filterResult) => {
+        if (categoryId === filterResult.id) {
+          eraseWorks();
+          const categoryIsDefault = categoryId === 0;
+          let filteredWorks = [];
+          if (categoryIsDefault) {
+            filteredWorks = works;
+          } else {
+            filteredWorks = works.filter(
+              (work) => work.category.id === categoryId
+            );
+          }
+          addWorks(filteredWorks);
+        }
+      });
+    });
+  });
 }
-
-// function addButtonListener(buttonListener) {
-//   const buttonsFilter = document.querySelectorAll(".filters button");
-//   const categories = fetch("http://localhost:5678/api/categories").then(
-//     (categories) => categories.json()
-//   );
-//   buttonsFilter.addEventListener("click", () => {
-//     const filterTest = works.filter(function (works) {
-//       return categories.id;
-//     });
-//   });
-// }
-
-// function Test (test2) {
-//   const buttonsFilter = document.querySelectorAll(".filters button");
-//   buttonsFilter.addEventListener("click")
-
-// }

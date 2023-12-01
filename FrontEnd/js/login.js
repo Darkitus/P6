@@ -30,7 +30,7 @@ form.addEventListener("submit", (event) => {
         alert("Ouééé"); // A supprimer pour plus de fluidité //
         window.location.href = "/"; // Redirection vers l'Index si reussite //
       } else {
-        alert("Mot de passe ou Email incorrect"); // Message d'erreur en cas d'echec //
+        alert("Erreur dans l’identifiant ou le mot de passe"); // Message d'erreur en cas d'echec //
       }
     });
   // .catch((error) => {                           J'ai vu sur differents codes ce genre de chose, j'ai pas encore compris son utilité
