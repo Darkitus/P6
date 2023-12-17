@@ -134,6 +134,15 @@ body {
   font-family: "Work Sans";
   font-size: 14px;
 }
+#modal-banner {
+  background-color: #000000;
+  color: white;
+  display: none;
+  justify-content: center;
+  column-gap: 10px;
+  padding: 20px 0;
+}
+
 header {
   display: flex;
   justify-content: space-between;
@@ -170,7 +179,7 @@ nav ul {
   list-style-type: none;
 }
 nav li {
-  padding: 0 10px;
+  padding: 0 22px;
   font-size: 1.2em;
   color: #000000; /* Ajouté */
 }
@@ -189,6 +198,7 @@ header li:hover {
 #introduction {
   display: flex;
   align-items: center;
+  margin: 139px 0;
 }
 #introduction figure {
   flex: 1;
@@ -212,31 +222,49 @@ header li:hover {
 #portfolio h2 {
   text-align: center;
   margin-bottom: 1em;
+  margin-left: 60px; /* Ajouté */
 }
 /* Ajouté */
 .filters {
   display: flex;
   justify-content: center;
   margin-bottom: 3em;
-  column-gap: 25px;
+  column-gap: 10px;
 }
-.filters button {
+.filters button,
+.modal-button {
   font-family: "Syne";
   font-weight: 700;
+  font-size: 1.14em;
   height: 37px;
   color: #1d6154;
   text-align: center;
   border: 1px solid #1d6154;
   border-radius: 60px;
   background-color: #ffffff;
+  cursor: pointer;
 }
-.filters button#0 {
-  width: 100px; /* Essayer de comprendre pourquoi ça fonctionne pas */
+#portfolio .tous,
+.objets {
+  width: 100px;
 }
-.filters button:hover {
-  /* NE PAS OUBLIER DE CHANGER HOVER PAR ACTIVE */
+#portfolio .appartements {
+  width: 157px;
+}
+#portfolio .hotels-restaurants {
+  width: 198px;
+}
+#portfolio .active,
+.modal-button {
   color: white;
   background-color: #1d6154;
+}
+.modal-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 237px;
+  text-decoration: none;
 }
 /* Fin d'ajout */
 
@@ -282,6 +310,16 @@ header li:hover {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+#contact span {
+  display: flex;
+  justify-content: center;
+  color: #ff0000;
+  font-size: 1.2em;
+  font-weight: 700;
+  margin: 10px 0 -10px 0;
+  opacity: 0;
+}
+
 input[type="submit"] {
   font-family: "Syne";
   font-weight: 700;
@@ -291,6 +329,7 @@ input[type="submit"] {
   width: 180px;
   text-align: center;
   border-radius: 60px;
+  cursor: pointer;
 }
 
 footer nav ul {
@@ -309,4 +348,95 @@ form a {
   justify-content: center;
   align-self: center;
   color: #3d3d3d;
+}
+
+#modal-projects {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+.modal-projects_edit {
+  position: relative;
+  top: 8px;
+  left: 30px;
+  display: none;
+  column-gap: 10px;
+  height: 100%;
+  text-decoration: none;
+  color: black;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: #000000;
+  background-color: #00000066;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+#modal-project {
+  background: #0000004d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-wrapper {
+  overflow: auto;
+  max-width: calc(100vh - 20px);
+  max-height: calc(100vh - 20px);
+  background-color: white;
+  width: 600px;
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.modal-close {
+  position: relative;
+  right: -49%;
+  cursor: pointer;
+}
+
+.modal-title {
+  color: #000;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 1.85em;
+  font-weight: 400;
+}
+
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }

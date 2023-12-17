@@ -12,15 +12,23 @@
     />
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
+    <script
+      src="https://kit.fontawesome.com/91eb157ec0.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
+    <div id="modal-banner">
+      <i class="fa-regular fa-pen-to-square"></i>
+      <span>Mode édition</span>
+    </div>
     <header>
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
         <ul>
           <a href="#portfolio"><li>projets</li></a>
           <a href="#contact"><li>contact</li></a>
-          <a href="/login.html"><li>login</li></a>
+          <a href="/pages/login.html"><li class="login">login</li></a>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
@@ -50,7 +58,31 @@
         </article>
       </section>
       <section id="portfolio">
-        <h2>Mes Projets</h2>
+        <div id="modal-projects">
+          <h2 class="js-projects">Mes Projets</h2>
+          <a href="#modal-project" class="modal-projects_edit js-modal">
+            <i class="fa-regular fa-pen-to-square"></i>
+            <span>modifier</span>
+          </a>
+          <aside
+            id="modal-project"
+            class="modal"
+            aria-hidden="true"
+            role="dialog"
+            aria-modal="false"
+            aria-labelledby="titlemodal"
+            style="display: none"
+          >
+            <div class="modal-wrapper js-modal-stop">
+              <i class="fa-solid fa-xmark modal-close js-modal-close"></i>
+              <h1 id="modal-title" class="modal-title">Galerie photo</h1>
+              <div class="workmodal"></div>
+              <a href="#modal-add-photo" class="modal-button"
+                >Ajouter une photo</a
+              >
+            </div>
+          </aside>
+        </div>
         <div class="filters"></div>
         <div class="gallery"></div>
       </section>
@@ -76,6 +108,8 @@
         </ul>
       </nav>
     </footer>
-    <script type="module" src="./js/function.js" defer></script>
+    <script src="./js/function.js" defer></script>
+    <script src="./js/admin.js" defer></script>
+    <script src="./js/modal.js" defer></script>
   </body>
 </html>

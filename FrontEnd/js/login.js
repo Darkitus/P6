@@ -1,14 +1,10 @@
-// const form = {
-//   email: document.querySelector("#email"),
-//   password: document.querySelector("#password"),
-// };
+const form = document.getElementById("form"); // Recuperation du "form" //
 
-const form = document.getElementById("form");
 // Creation d'un EventListener au clic sur le bouton submit du "form" //
 form.addEventListener("submit", (event) => {
-  event.preventDefault();
+  event.preventDefault(); // Annulation de l'evenement par defaut du bouton submit //
 
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value; // Recuperation des valeurs des inputs du "form" //
   const password = document.getElementById("password").value;
 
   // Envoi de POST vers l'API //
@@ -24,13 +20,12 @@ form.addEventListener("submit", (event) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      const token = data.token;
+      const token = data.token; // Recuperation du token dans la reponse de l'API //
       localStorage.setItem("authToken", token); // Stockage du token dans le LocalStorage //
       if (token) {
-        alert("Ouééé"); // A supprimer pour plus de fluidité //
-        window.location.href = "/"; // Redirection vers l'Index si reussite //
+        window.location.href = "/"; // Si le token existe, redirection vers l'Index //
       } else {
-        alert("Erreur dans l’identifiant ou le mot de passe"); // Message d'erreur en cas d'echec //
+        document.getElementById("error").style.opacity = "1"; // Si le token n'existe pas, affichage d'un message d'erreur //
       }
     });
   // .catch((error) => {                           J'ai vu sur differents codes ce genre de chose, j'ai pas encore compris son utilité
