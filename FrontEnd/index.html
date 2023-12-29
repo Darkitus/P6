@@ -76,10 +76,59 @@
             <div class="modal-wrapper js-modal-stop">
               <i class="fa-solid fa-xmark modal-close js-modal-close"></i>
               <h1 id="modal-title" class="modal-title">Galerie photo</h1>
-              <div class="workmodal"></div>
-              <a href="#modal-add-photo" class="modal-button"
+              <div class="work-modal"></div>
+              <a href="#modal-add-photo" class="modal-button js-modal"
                 >Ajouter une photo</a
               >
+            </div>
+          </aside>
+          <aside
+            id="modal-add-photo"
+            class="modal-add-photo"
+            aria-hidden="true"
+            role="dialog"
+            aria-modal="false"
+            aria-labelledby="titlemodal"
+            style="display: none"
+          >
+            <div class="modal-wrapper js-modal-stop">
+              <div class="modal-nav">
+                <a class="modal-photo-return" href="#modal-project"
+                  ><i class="fa-solid fa-arrow-left"></i
+                ></a>
+                <i
+                  class="fa-solid fa-xmark modal-photo-close js-modal-close"
+                ></i>
+              </div>
+              <h1 id="modal-title" class="modal-title">Ajout photo</h1>
+              <form
+                enctype="multipart/form-data"
+                method="post"
+                class="modal-form"
+                name="form-upload"
+              >
+                <div class="modal-photo-adder">
+                  <img src="" class="modal-form-photo-preview" />
+                  <i class="fa-regular fa-image"></i>
+                  <label for="photo-file-input">+ Ajouter photo</label>
+                  <input type="file" id="photo-file-input" required />
+                  <span>jpg, png : 4mo max</span>
+                </div>
+                <div class="modal-photo-infos">
+                  <label>Titre</label>
+                  <input type="text" name="formTitle" id="formTitle" required />
+                  <label>Catégorie </label>
+                  <div class="category-select-container">
+                    <select
+                      name="category"
+                      id="categorySelect"
+                      required
+                    ></select>
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+                <input id="modal-form-submit" type="submit" value="Valider" />
+              </form>
             </div>
           </aside>
         </div>

@@ -350,11 +350,13 @@ form a {
   color: #3d3d3d;
 }
 
-#modal-projects {
+#modal-projects,
+#modal-add-photo {
   display: flex;
   justify-content: center;
   padding-bottom: 20px;
 }
+
 .modal-projects_edit {
   position: relative;
   top: 8px;
@@ -365,29 +367,9 @@ form a {
   text-decoration: none;
   color: black;
 }
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: #000000;
-  background-color: #00000066;
-}
 
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-#modal-project {
+.modal,
+.modal-add-photo {
   background: #0000004d;
   display: flex;
   align-items: center;
@@ -397,6 +379,14 @@ form a {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
 }
 
 .modal-wrapper {
@@ -413,10 +403,45 @@ form a {
   border-radius: 10px;
 }
 
+.work-modal {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 25px 10px;
+  margin: 30px 90px 30px 90px;
+  padding-bottom: 50px;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.work-modal div {
+  position: relative;
+}
+
+.work-modal img {
+  height: 102px;
+  width: 76px;
+}
+
+.work-modal i {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background: black;
+  color: white;
+  height: fit-content;
+  padding: 4px;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 2px;
+  width: 12px;
+  cursor: pointer;
+}
+
 .modal-close {
   position: relative;
   right: -49%;
   cursor: pointer;
+  font-size: 20px;
 }
 
 .modal-title {
@@ -439,4 +464,120 @@ form a {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+.modal-nav {
+  position: relative;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.modal-photo-return {
+  position: absolute;
+  left: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #000000;
+}
+
+.modal-photo-close {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.modal-form-photo-preview[src="*"] {
+  width: 129px;
+  height: 169px;
+  position: absolute;
+}
+
+.modal-photo-adder {
+  background-color: #e8f1f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 420px;
+  height: 169px;
+}
+
+.modal-photo-adder i {
+  font-size: 76px;
+  color: #b9c5cc;
+}
+
+.modal-photo-adder label {
+  background-color: #cbd6dc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  width: 173px;
+  height: 36px;
+  color: #306685;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal-photo-adder span {
+  font-size: 0.71em;
+  color: #444444;
+}
+
+#photo-file-input {
+  display: none;
+}
+
+.modal-photo-infos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 420px;
+  padding: 30px 0 50px 0;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.category-select-container {
+  position: relative;
+}
+
+.category-select-container i {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 11px;
+  color: #6c6c6c;
+  padding: 20px 28px 0 0;
+}
+
+.modal-photo-infos input,
+select {
+  color: #444444;
+  border: 1px;
+  height: 51px;
+  width: 420px;
+  box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+  text-indent: 16px;
+}
+
+.modal-photo-infos select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  z-index: 1;
+  position: relative;
+  background: transparent;
+}
+
+#modal-form-submit {
+  display: flex;
+  justify-content: center;
+  width: 237px;
+  height: 36px;
+  background-color: #a7a7a7;
+  font-size: 1em;
+  border: none;
 }

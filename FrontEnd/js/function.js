@@ -10,6 +10,11 @@ const categories = fetch("http://localhost:5678/api/categories").then(
 works.then((works) => {
   addWorks(works);
   addFilters(works);
+  addWorksModal(works);
+});
+
+categories.then((categories) => {
+  loadCategories(categories);
 });
 
 // Création des "works" dans le HTML //
@@ -87,4 +92,117 @@ function addFilters(works) {
       });
     });
   });
+}
+
+function addWorksModal(works) {
+  works.forEach((work) => {
+    const workModal = document.querySelector(".work-modal"); // Selection de la div "work-modal" //
+    const workModalDiv = document.createElement("div"); // Création d'une div //
+    const workModalImg = document.createElement("img"); // Création d'une image //
+    const workModalIcon = document.createElement("i"); // Création d'une icone //
+    workModalImg.src = work.imageUrl; // Ajout de l'url de l'image //
+    workModalImg.alt = work.title; // Ajout du titre de l'image //
+    workModalIcon.classList.add("fa-solid", "fa-trash-can"); // Ajout des classes à l'icone //
+    workModal.appendChild(workModalDiv); // Ajout de la div dans la div "work-modal" //
+    workModalDiv.append(workModalImg, workModalIcon); // Ajout de l'image et de l'icone dans la div "work-modal" //
+
+    // Suppression d'un "work" au click sur la poubelle //
+    workModalIcon.addEventListener("click", () => {
+      const selectWorkModalDiv = document.querySelector(".work-modal"); // Selection de la div "work-modal" //
+      selectWorkModalDiv.innerHTML = ""; // Suppression de tout les elements HTML de la div "work-modal" //
+      fetch(`http://localhost:5678/api/works/${work.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      }).then(() => {
+        eraseWorks(); // Suppression de tout les "works" affiché //
+        works = works.filter((workToDelete) => workToDelete.id !== work.id); // Suppression du "work" dans le tableau //
+        addWorks(works); // Ajout des "works" dans le HTML //
+        addWorksModal(works); // Ajout des "works" dans le HTML de la modal //
+      });
+    });
+  });
+}
+
+async function loadCategories(categories) {
+  const formCategory = document.getElementById("categorySelect");
+  formCategory.innerHTML = "";
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.name;
+    formCategory.appendChild(option);
+  });
+}
+
+// const form = document.forms.namedItem("form-upload");
+// form.addEventListener(
+//   "submit",
+//   (event) => {
+//     const output = document.querySelector("#output");
+//     const formData = new FormData(form);
+
+//     formData.append("CustomField", "Des données supplémentaires");
+
+//     const request = new XMLHttpRequest();
+//     request.open("POST", "http://localhost:5678/api/works", true);
+//     request.onload = (progress) => {
+//       output.innerHTML =
+//         request.status === 200
+//           ? "Fichier téléversé !"
+//           : `Erreur ${request.status} lors de la tentative de téléversement du fichier.<br />`;
+//     };
+
+//     request.send(formData);
+//     event.preventDefault();
+//   },
+//   false
+// );
+
+const form = document.forms.namedItem("form-upload");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  submitForm();
+});
+
+function submitForm() {
+  const formData = new FormData(form);
+  const imageSelected = document.getElementById("photo-file-input").value;
+  const titleSelected = form.elements.namedItem("formTitle").value;
+  const categorySelected = document.getElementById("categorySelect").value;
+
+  const reader = new FileReader();
+  reader.addEventListener(
+    "load",
+    function () {
+      const dataString = reader.result;
+    },
+    false
+  );
+  reader.readAsBinaryString(file);
+  // Add additional form data as needed
+  formData.append("image", dataString);
+  formData.append("title", titleSelected);
+  formData.append("category", categorySelected);
+
+  // Call function to submit form data
+  submitFormData(formData);
+  console.log(imageSelected, titleSelected, categorySelected);
+}
+
+function submitFormData(formData) {
+  fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Handle response data
+    })
+    .catch((error) => {
+      // Handle errors
+    });
 }
