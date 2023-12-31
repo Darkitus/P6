@@ -265,6 +265,7 @@ header li:hover {
   justify-content: center;
   width: 237px;
   text-decoration: none;
+  margin-bottom: 25px;
 }
 /* Fin d'ajout */
 
@@ -487,7 +488,8 @@ form a {
   font-size: 20px;
 }
 
-.modal-form-photo-preview[src="*"] {
+.modal-form-photo-preview {
+  display: none;
   width: 129px;
   height: 169px;
   position: absolute;
@@ -499,17 +501,23 @@ form a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   width: 420px;
   height: 169px;
 }
 
-.modal-photo-adder i {
+.form-inputs-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-inputs-box i {
   font-size: 76px;
   color: #b9c5cc;
 }
 
-.modal-photo-adder label {
+.form-inputs-box label {
   background-color: #cbd6dc;
   display: flex;
   justify-content: center;
@@ -522,7 +530,7 @@ form a {
   font-weight: 600;
 }
 
-.modal-photo-adder span {
+.form-inputs-box span {
   font-size: 0.71em;
   color: #444444;
 }

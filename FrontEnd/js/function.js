@@ -19,12 +19,16 @@ categories.then((categories) => {
 
 // Création des "works" dans le HTML //
 function addWorks(works) {
+  if (!Array.isArray(works)) {
+    works = [works];
+  }
   works.forEach((work) => {
     const galleryDiv = document.querySelector(".gallery"); // Selection de la div "gallery" //
     const figureElement = document.createElement("figure"); // Création d'une figure //
     const imgElement = document.createElement("img"); // Création d'une image //
     const figcaptionElement = document.createElement("figcaption"); // Création d'un figcaption //
     galleryDiv.appendChild(figureElement); // Ajout de la figure dans la div "gallery" //
+    work.galleryElement = figureElement; // Stockez une référence à l'élément de la galerie dans l'objet work //
     figureElement.appendChild(imgElement); // Ajout de l'image dans la figure //
     figureElement.appendChild(figcaptionElement); // Ajout du figcaption dans la figure //
     imgElement.src = work.imageUrl; // Ajout de l'url de l'image //
@@ -94,7 +98,11 @@ function addFilters(works) {
   });
 }
 
+// Affichage des "works" dans la modal //
 function addWorksModal(works) {
+  if (!Array.isArray(works)) {
+    works = [works];
+  }
   works.forEach((work) => {
     const workModal = document.querySelector(".work-modal"); // Selection de la div "work-modal" //
     const workModalDiv = document.createElement("div"); // Création d'une div //
@@ -108,90 +116,114 @@ function addWorksModal(works) {
 
     // Suppression d'un "work" au click sur la poubelle //
     workModalIcon.addEventListener("click", () => {
-      const selectWorkModalDiv = document.querySelector(".work-modal"); // Selection de la div "work-modal" //
-      selectWorkModalDiv.innerHTML = ""; // Suppression de tout les elements HTML de la div "work-modal" //
+      workModalDiv.remove(); // Suppression de l'élément parent de l'icône de suppression
+      work.galleryElement.remove(); // Suppression de l'élément correspondant de la galerie
       fetch(`http://localhost:5678/api/works/${work.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       }).then(() => {
-        eraseWorks(); // Suppression de tout les "works" affiché //
-        works = works.filter((workToDelete) => workToDelete.id !== work.id); // Suppression du "work" dans le tableau //
-        addWorks(works); // Ajout des "works" dans le HTML //
-        addWorksModal(works); // Ajout des "works" dans le HTML de la modal //
+        works = works.filter((workToDelete) => workToDelete.id !== work.id);
       });
     });
   });
 }
 
+// Affichage des catégories dans le formulaire d'ajout de "work" //
 async function loadCategories(categories) {
-  const formCategory = document.getElementById("categorySelect");
-  formCategory.innerHTML = "";
+  const formCategory = document.getElementById("categorySelect"); // Selection de la div "categorySelect" //
+  formCategory.innerHTML = ""; // Suppression de tout les elements HTML de la div "categorySelect" //
+
+  const defaultOption = document.createElement("option"); // Création d'une option //
+  defaultOption.value = ""; // Ajout de l'id de la catégorie //
+  formCategory.appendChild(defaultOption); // Ajout des catégories dans le formulaire //
+
   categories.forEach((category) => {
-    const option = document.createElement("option");
-    option.value = category.id;
-    option.textContent = category.name;
-    formCategory.appendChild(option);
+    const option = document.createElement("option"); // Création d'une option //
+    option.value = category.id; // Ajout de l'id de la catégorie //
+    option.textContent = category.name; // Ajout du nom de la catégorie //
+    formCategory.appendChild(option); // Ajout des catégories dans le formulaire //
   });
 }
 
-// const form = document.forms.namedItem("form-upload");
-// form.addEventListener(
-//   "submit",
-//   (event) => {
-//     const output = document.querySelector("#output");
-//     const formData = new FormData(form);
+// Conversion de l'image en base64 //
+function readImage(file, callback) {
+  const reader = new FileReader(); // Creation d'un objet FileReader //
 
-//     formData.append("CustomField", "Des données supplémentaires");
+  reader.addEventListener("load", () => {
+    callback(reader.result);
+  });
 
-//     const request = new XMLHttpRequest();
-//     request.open("POST", "http://localhost:5678/api/works", true);
-//     request.onload = (progress) => {
-//       output.innerHTML =
-//         request.status === 200
-//           ? "Fichier téléversé !"
-//           : `Erreur ${request.status} lors de la tentative de téléversement du fichier.<br />`;
-//     };
+  reader.readAsDataURL(file); // Conversion de l'image en base64 //
+}
 
-//     request.send(formData);
-//     event.preventDefault();
-//   },
-//   false
-// );
+const form = document.forms.namedItem("form-upload"); // Selection du formulaire //
+const photoInput = document.getElementById("photo-file-input"); // Selection de l'input de l'image //
+const photoPreview = document.getElementById("photo-preview"); // Selection de l'element de l'image //
+const inputsBox = document.querySelector(".form-inputs-box"); // Selection de la div contenant les inputs //
+const formSubmitButton = document.getElementById("modal-form-submit"); // Selection du bouton d'envoi du formulaire //
+const allFormInputs = form.querySelectorAll("input, select"); // Sélectionne tous les champs du formulaire //
 
-const form = document.forms.namedItem("form-upload");
+// Vérification du formulaire //
+function checkForm() {
+  let isFormFilled = true; // Définit la variable à true //
+  allFormInputs.forEach((input) => {
+    if (!input.value) {
+      isFormFilled = false; // Si un champ n'est pas rempli, on passe la variable à false //
+    }
+  });
 
+  if (isFormFilled) {
+    formSubmitButton.style.backgroundColor = "#1D6154"; // Change la couleur du bouton si le formulaire est rempli //
+  } else {
+    formSubmitButton.style.backgroundColor = ""; // Réinitialise la couleur du bouton //
+  }
+}
+
+allFormInputs.forEach((input) => {
+  input.addEventListener("input", checkForm); // Ajoute un événement input sur chaque champ du formulaire //
+});
+
+// Affiche la prévisualisation de l'image //
+photoInput.addEventListener("change", () => {
+  const imageSelected = photoInput.files[0]; // Recuperation de l'image //
+  if (imageSelected) {
+    readImage(imageSelected, (dataString) => {
+      photoPreview.src = dataString; // Ajout de l'image //
+      photoPreview.style.display = "block"; // Fait apparaitre l'element de l'image //
+      inputsBox.style.display = "none"; // Cache la div contenant les inputs //
+    });
+  }
+});
+
+// Envoi du formulaire //
 form.addEventListener("submit", (e) => {
-  e.preventDefault();
+  e.preventDefault(); // On annule le comportement par défaut du formulaire //
   submitForm();
 });
 
+// Envoi des données du formulaire //
 function submitForm() {
-  const formData = new FormData(form);
-  const imageSelected = document.getElementById("photo-file-input").value;
-  const titleSelected = form.elements.namedItem("formTitle").value;
-  const categorySelected = document.getElementById("categorySelect").value;
+  const formData = new FormData(); // Creation d'un objet FormData //
+  const imageSelected = photoInput.files[0]; // Recuperation de l'image //
+  const titleSelected = form.elements.namedItem("formTitle").value; // Recuperation de la valeur du titre //
+  const categorySelected = document.getElementById("categorySelect").value; // Recuperation de la valeur de la catégorie //
 
-  const reader = new FileReader();
-  reader.addEventListener(
-    "load",
-    function () {
-      const dataString = reader.result;
-    },
-    false
-  );
-  reader.readAsBinaryString(file);
-  // Add additional form data as needed
-  formData.append("image", dataString);
-  formData.append("title", titleSelected);
-  formData.append("category", categorySelected);
+  if (imageSelected) {
+    formData.append("image", imageSelected); // Ajout de l'image //
+    formData.append("title", titleSelected); // Ajout du titre //
+    formData.append("category", parseInt(categorySelected, 10)); // Ajout de la catégorie //
+    console.log(imageSelected, titleSelected, categorySelected); // Pour verifier la bonne reception des données //
 
-  // Call function to submit form data
-  submitFormData(formData);
-  console.log(imageSelected, titleSelected, categorySelected);
+    // Envoi des données //
+    submitFormData(formData).then((newWork) => {
+      addWorks(newWork);
+      addWorksModal(newWork);
+    });
+  }
 }
 
 function submitFormData(formData) {
-  fetch("http://localhost:5678/api/works", {
+  return fetch("http://localhost:5678/api/works", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -199,10 +231,10 @@ function submitFormData(formData) {
     body: formData,
   })
     .then((response) => response.json())
-    .then((data) => {
-      // Handle response data
-    })
-    .catch((error) => {
-      // Handle errors
+    .then((newWork) => {
+      form.reset(); // Réinitialisation du formulaire après l'envoi //
+      photoPreview.style.display = "none"; // Réinitialisation de la prévisualisation de l'image //
+      inputsBox.style.display = "flex"; // Réinitialisation de la div contenant les inputs //
+      return newWork; // Retourne les données du nouveau "work" //
     });
 }
