@@ -28,7 +28,4 @@ form.addEventListener("submit", (event) => {
         document.getElementById("error").style.opacity = "1"; // Si le token n'existe pas, affichage d'un message d'erreur //
       }
     });
-  // .catch((error) => {                           J'ai vu sur differents codes ce genre de chose, j'ai pas encore compris son utilité
-  //   console.error("Texte : ", error);           A en croire le nom, ça "attrape" une erreur, mais j'en sais pas plus car rien ne se passe quand incorrect
-  // });                                           Besoin de se renseigner plus sur ça
 });
