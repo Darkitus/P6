@@ -185,12 +185,34 @@ allFormInputs.forEach((input) => {
 
 // Affiche la prévisualisation de l'image //
 photoInput.addEventListener("change", () => {
+  const maxFileSize = 4 * 1024 * 1024; // Limitation de la taille du fichier à 4Mo //
   const imageSelected = photoInput.files[0]; // Recuperation de l'image //
+  const fileError = document.getElementById("file-error"); // Selection de l'element de l'erreur //
+
   if (imageSelected) {
+    // Vérification du type de fichier //
+    if (
+      imageSelected.type !== "image/jpeg" &&
+      imageSelected.type !== "image/png"
+    ) {
+      fileError.textContent = "Seuls les fichiers .jpg ou .png sont acceptés"; // Modifie le message d'erreur //
+      fileError.style.display = "block"; // Affiche l'erreur //
+      photoInput.value = ""; // Réinitialise la valeur de l'input //
+      return; // Arrête l'exécution de la fonction //
+    }
+    // Vérification de la taille du fichier //
+    if (imageSelected.size > maxFileSize) {
+      fileError.textContent = "Le fichier sélectionné est trop volumineux"; // Modifie le message d'erreur //
+      fileError.style.display = "block"; // Affiche l'erreur //
+      photoInput.value = ""; // Réinitialise la valeur de l'input //
+      return; // Arrête l'exécution de la fonction //
+    }
     readImage(imageSelected, (dataString) => {
       photoPreview.src = dataString; // Ajout de l'image //
       photoPreview.style.display = "block"; // Fait apparaitre l'element de l'image //
       inputsBox.style.display = "none"; // Cache la div contenant les inputs //
+      fileError.textContent = ""; // Réinitialise le message d'erreur //
+      fileError.style.display = "none"; // Cache l'erreur //
     });
   }
 });

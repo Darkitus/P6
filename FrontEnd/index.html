@@ -116,7 +116,13 @@
                   <div class="form-inputs-box">
                     <i class="fa-regular fa-image"></i>
                     <label for="photo-file-input">+ Ajouter photo</label>
-                    <input type="file" id="photo-file-input" required />
+                    <input
+                      type="file"
+                      id="photo-file-input"
+                      accept=".jpg,.png"
+                      required
+                    />
+                    <span id="file-error"></span>
                     <span>jpg, png : 4mo max</span>
                   </div>
                 </div>

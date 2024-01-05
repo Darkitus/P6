@@ -53,10 +53,12 @@ document.querySelectorAll(".js-modal").forEach((modalLink) => {
 function resetModal() {
   const secondModalForm = document.forms.namedItem("form-upload"); // On récupère le formulaire de la modal d'ajout de photo //
   const secondModalImgPreview = document.querySelector("#photo-preview"); // On récupère l'élément img de la modal d'ajout de photo //
+  const fileError = document.getElementById("file-error"); // On récupère le message d'erreur //
   secondModalForm.reset(); // Réinitialisation du formulaire après l'envoi //
   secondModalImgPreview.src = ""; // Réinitialisation de la preview img //
   photoPreview.style.display = "none"; // On cache la preview //
   inputsBox.style.display = "flex"; // Réinitialisation de la div contenant les inputs //
+  fileError.style.display = "none"; // On cache le message d'erreur //
 }
 
 // On récupère la flèche de retour de la seconde modal //
